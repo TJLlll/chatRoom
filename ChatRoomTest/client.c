@@ -11,7 +11,7 @@
 #include <json-c/arraylist.h>
 #include <json-c/json.h>
 #include "Func.h"
-
+#include "Print.h"
 
 
 
@@ -22,33 +22,35 @@ int main()
     /* 创建客户端文件描述符 */
     clnSocket(&sockfd, SERVER_PORT, SERVER_IP);
 
-    /* 用于存放登陆后的用户信息 */
-    struct json_object* userDataObj = NULL;
     userData MyData;//客户端用于登陆后保存个人信息的结构体
 
     char buf[COMMUNICATION_SIZE];
     memset(buf, 0, sizeof(buf));
+    //Init_Print();
     /* 注册 */
     //Register(sockfd, buf);
     //printf("%s\n", buf);
     //memset(buf, 0, sizeof(buf));
     /* 登录 */
-    logon(sockfd, &MyData);
+    // logon(sockfd, &MyData);
     //printf("%s, %s, %d, %s, %s\n", MyData.ID, MyData.NAME, MyData.AGE, MyData.SEX, MyData.PASSWORD);
 
     //printf("%s\n", buf);
-    //AddFriend(sockfd, MyData.ID);
+    // AddFriend(sockfd, MyData.ID);
     //viewOtherInvite(sockfd);
     //viewMyInvite(sockfd);
-    //sleep(30);
+
     //privateChat(sockfd);
-    //createGroup(sockfd);
+
+
+    // createGroup(sockfd);
     //AddGroup(sockfd);
+    
+    //GroupChat(sockfd);
 
-    GroupChat(sockfd);
-    sleep(10);
-    logOut(sockfd);
+    // logOut(sockfd);
 
+    choice(sockfd);
     close(sockfd);
     return 0;
 }

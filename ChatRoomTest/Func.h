@@ -1,9 +1,23 @@
 #ifndef _FUNC_H_
 #define _FUNC_H_
-#include "privateMsgHash.h"
-#include "GrpMsgHash.h"
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <signal.h>
+#include <error.h>
+#include <pthread.h>
+#include <json-c/arraylist.h>
+#include <json-c/json.h>
 #include "stateList.h"
 #include <sqlite3.h>
+#include "Sqlite3Db.h"
+#include "privateMsgHash.h"
+#include "GrpMsgHash.h"
 
 /* 客户端读写分离终止标志宏 */
 #define CONTINUE    0
@@ -11,7 +25,7 @@
 
 #define MAX_LISTEN  128
 #define COMMUNICATION_SIZE   256
-#define SERVER_PORT 8080
+#define SERVER_PORT 8082
 #define SERVER_IP "127.0.0.1"
 #define BUFFER_SIZE 256
 #define MIN_THREAD_NUMS 5

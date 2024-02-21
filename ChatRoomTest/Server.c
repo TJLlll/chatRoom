@@ -280,7 +280,6 @@ void* threadHandle(void* arg)
                         pthread_mutex_unlock(&Db_Mutx);
                         if(rows == 0)/* 这里的rows是好友表中的查询结果的行数 */
                         {   
-                            
                             /* 好友表中不存在这两人的好友关系，可以发送好友邀请 */
                             sprintf(sqlBuf,"INSERT INTO FRIEND_DATA (INVITER,INVITEE,DEAL) VALUES ('%s','%s','还在考虑')", inviter, invitee);
 

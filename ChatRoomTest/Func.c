@@ -1,31 +1,18 @@
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <signal.h>
-#include <error.h>
-#include <pthread.h>
-#include <json-c/arraylist.h>
-#include <json-c/json.h>
 #include "Func.h"
-#include "stateList.h"
-#include <sqlite3.h>
-#include "Sqlite3Db.h"
-#include "privateMsgHash.h"
-#include "GrpMsgHash.h"
-
 
 
 /* 静态 */
 /* 发送和接收消息，读写分离 */
 static int privateMsgChat(int sockfd);
 
+/* 客户端私聊读线程函数 */
+static void* readThread(void * arg);
+
 /* 群聊读写分离 */
 static int GrpMsgChat(int sockfd);
+
+/* 客户端群聊读线程函数 */
+static void* GrpReadThread(void * arg);
 
 /* 服务端套接字创建函数，传出参数获取套接字描述符，第二个参数为端口号 */
 int SrSocket(int * sockfdGet, int serverPort)
@@ -849,9 +836,9 @@ int viewOtherInvite(int sockfd)
 
 /* 私聊和好友列表 */
 /* 私聊和好友列表结合在一个模块 */
-//SELECT INVITEE FROM FRIEND_DATA WHERE INVITER = '我';
 int privateChat(int sockfd)
 {
+    //SELECT INVITEE FROM FRIEND_DATA WHERE INVITER = '我';
     char sendBuf[COMMUNICATION_SIZE];
     char recvBuf[COMMUNICATION_SIZE];
 
@@ -868,6 +855,7 @@ int privateChat(int sockfd)
 
     /* 计数 */
     int nums = 0;
+    system("clear");
     while(1)
     {
         memset(recvBuf, 0, sizeof(recvBuf));
@@ -887,9 +875,9 @@ int privateChat(int sockfd)
                 /* 读取结束 */
                 break;
             }
-            else
+            else if(strncmp(recvBuf, "FINISH", strlen("FINISH")) != 0)
             {
-                printf("%s\n", recvBuf);
+                printf("\033[0;0;0m%s\n", recvBuf);
                 /* 这里的nums用于记录有多少个好友 */
                 nums++;
             }
@@ -956,7 +944,7 @@ int privateChat(int sockfd)
     return 0;
 }
 
-/* 读线程函数 */
+/* 客户端私聊读线程函数 */
 void* readThread(void * arg)
 {
     /* 线程分离 */
@@ -983,8 +971,7 @@ void* readThread(void * arg)
             read(sockfd, recvBuf, sizeof(recvBuf));
             
             if(strncmp(recvBuf, "!@#$%^*&^%$#@!_^@%#$#!", strlen("!@#$%^*&^%$#@!_^@%#$#!")) != 0)
-            {
-                
+            {  
                 printf("\033[1;34;47m%s\033[0;0;0m\n", recvBuf);
             }
         }
@@ -1210,6 +1197,7 @@ int AddGroup(int sockfd)
 /* 客户端:群聊和好友列表 */
 int GroupChat(int sockfd)
 {
+    system("clear");
     char sendBuf[COMMUNICATION_SIZE];
     char recvBuf[COMMUNICATION_SIZE];
 
@@ -1300,12 +1288,11 @@ int GroupChat(int sockfd)
         }
         
     }
-
     return 0;
 }
 
 /* 读线程函数 */
-void* GrpReadThread(void * arg)
+static void* GrpReadThread(void * arg)
 {
     /* 线程分离 */
     pthread_detach(pthread_self());
@@ -1356,6 +1343,7 @@ static int GrpMsgChat(int sockfd)
 
     pth_Conect.sockfd = sockfd;
     pth_Conect.stop = CONTINUE;
+    /* 创建读线程 */
     pthread_create(&tid, NULL, GrpReadThread, (void*)&pth_Conect);
     system("clear");
     while(1)
@@ -1458,8 +1446,9 @@ int dealGrpChat(int acceptfd, char* user, char* Group, GpHash* Gp_Hash, sqlite3*
             pthread_mutex_unlock(Db_Mutx);
         }
         
-        //sqlite3_free_table(GpResult);
+        sqlite3_free_table(GpResult);
     }
     
     return 0;
 }
+

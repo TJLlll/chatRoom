@@ -405,11 +405,5 @@ int threadPoolDestroy(threadPool_t * pool)
     pthread_cond_destroy(&(pool->notEmpty));
     pthread_cond_destroy(&(pool->notFull));
 
-    if (pool)
-    {
-        free(pool);
-        pool = NULL;
-    }
-
     return ON_SUCCESS;
 }
