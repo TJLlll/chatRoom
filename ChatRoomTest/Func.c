@@ -709,7 +709,7 @@ int viewMyInvite(int sockfd)
         }
 
     }
-
+    sleep(3);
     json_object_put(viewMyInvites);
     return 0;   
 }
@@ -1009,7 +1009,7 @@ static int privateMsgChat(int sockfd)
             /* 停止读线程函数的read */
             pth_Conect.stop = STOP;
             memset(sendBuf, 0, sizeof(sendBuf));
-            /* 告诉客户端可以停止读了 */
+            /* 告诉服务端可以停止读了 */
             strncpy(sendBuf, "!@%^&$@(#^)!@*+@$#$@", sizeof("!@%^&$@(#^)!@*+@$#$@"));
             write(sockfd, sendBuf, sizeof(sendBuf));
             break;

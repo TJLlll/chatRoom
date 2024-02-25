@@ -55,6 +55,7 @@ static int after_LogOn(int sockfd, char* ID)
         case 5:
             system("clear");
             viewMyInvite(sockfd);
+            getchar();
             break;
         case 6:
             system("clear");

@@ -21,35 +21,6 @@ int main()
     int sockfd = 0;
     /* 创建客户端文件描述符 */
     clnSocket(&sockfd, SERVER_PORT, SERVER_IP);
-
-    userData MyData;//客户端用于登陆后保存个人信息的结构体
-
-    char buf[COMMUNICATION_SIZE];
-    memset(buf, 0, sizeof(buf));
-    //Init_Print();
-    /* 注册 */
-    //Register(sockfd, buf);
-    //printf("%s\n", buf);
-    //memset(buf, 0, sizeof(buf));
-    /* 登录 */
-    // logon(sockfd, &MyData);
-    //printf("%s, %s, %d, %s, %s\n", MyData.ID, MyData.NAME, MyData.AGE, MyData.SEX, MyData.PASSWORD);
-
-    //printf("%s\n", buf);
-    // AddFriend(sockfd, MyData.ID);
-    //viewOtherInvite(sockfd);
-    //viewMyInvite(sockfd);
-
-    //privateChat(sockfd);
-
-
-    // createGroup(sockfd);
-    //AddGroup(sockfd);
-    
-    //GroupChat(sockfd);
-
-    // logOut(sockfd);
-
     choice(sockfd);
     close(sockfd);
     return 0;

@@ -25,7 +25,7 @@
 
 #define MAX_LISTEN  128
 #define COMMUNICATION_SIZE   256
-#define SERVER_PORT 8082
+#define SERVER_PORT 8080
 #define SERVER_IP "127.0.0.1"
 #define BUFFER_SIZE 256
 #define MIN_THREAD_NUMS 5
